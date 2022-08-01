@@ -1,5 +1,5 @@
-function App() {
-  return <div className="App">Coucou</div>;
+function Home() {
+  return <div>Home !</div>;
 }
 
-export default App;
+export default Home;
