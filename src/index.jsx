@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Header from "./components/Header";
 import GlobalStyle from "./utils/style/GlobalStyle";
+import Footer from "./components/Footer";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -19,6 +20,7 @@ root.render(
         <Route path="/connection" element={<Connection />}></Route>
         <Route path="/profile" element={<Profile />}></Route>
       </Routes>
+      <Footer />
     </Router>
   </React.StrictMode>
 );

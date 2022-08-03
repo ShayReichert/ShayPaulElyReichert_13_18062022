@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../assets/argentBankLogo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
-// import colors from "../utils/style/colors";
+import { faUserCircle, faSignOut } from "@fortawesome/free-solid-svg-icons";
+import colors from "../utils/style/colors";
 
 const HeaderContainer = styled.nav`
   display: flex;
@@ -13,7 +13,7 @@ const HeaderContainer = styled.nav`
 
   a {
     font-weight: bold;
-    color: #2c3e50;
+    color: ${colors.darkblue};
   }
 
   a.router-link-exact-active {
@@ -21,7 +21,7 @@ const HeaderContainer = styled.nav`
   }
 `;
 
-const LogoLink = styled(Link)`
+const LogoLinkContainer = styled(Link)`
   display: flex;
   align-items: center;
 `;
@@ -40,13 +40,21 @@ const ItemLink = styled(Link)`
   }
 `;
 
-function Header() {
+const isLoggIn = false;
+
+function LogoLink() {
+  return (
+    <LogoLinkContainer to="/">
+      <HomeLogo src={Logo} alt="Argent Bank Logo" />
+      <h1 className="sr-only">Argent Bank</h1>
+    </LogoLinkContainer>
+  );
+}
+
+function HeaderLogOut() {
   return (
     <HeaderContainer>
-      <LogoLink to="/">
-        <HomeLogo src={Logo} alt="Argent Bank Logo" />
-        <h1 className="sr-only">Argent Bank</h1>
-      </LogoLink>
+      <LogoLink />
 
       <ItemLink to="/connection">
         <FontAwesomeIcon icon={faUserCircle} /> Sign In
@@ -55,6 +63,31 @@ function Header() {
       {/* <Link to="/profile">Profile</Link> */}
     </HeaderContainer>
   );
+}
+
+function HeaderLogIn() {
+  return (
+    <HeaderContainer>
+      <LogoLink />
+
+      <div>
+        <ItemLink to="/profile">
+          <FontAwesomeIcon icon={faUserCircle} /> Tony
+        </ItemLink>
+        <ItemLink to="/">
+          <FontAwesomeIcon icon={faSignOut} /> Sign Out
+        </ItemLink>
+      </div>
+    </HeaderContainer>
+  );
+}
+
+function Header() {
+  if (isLoggIn) {
+    return <HeaderLogIn />;
+  } else {
+    return <HeaderLogOut />;
+  }
 }
 
 export default Header;

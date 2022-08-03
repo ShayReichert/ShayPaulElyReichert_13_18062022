@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+import colors from "./colors";
 
 const StyledGlobalStyle = createGlobalStyle`
     html {
@@ -6,7 +7,7 @@ const StyledGlobalStyle = createGlobalStyle`
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
-        color: #2c3e50;
+        color: ${colors.darkblue};
     }
 
     body {
@@ -21,7 +22,7 @@ const StyledGlobalStyle = createGlobalStyle`
     }
 
     .bg-dark {
-    background-color: #12002b;
+    background-color: ${colors.secondary};
     }
 
     .sr-only {
