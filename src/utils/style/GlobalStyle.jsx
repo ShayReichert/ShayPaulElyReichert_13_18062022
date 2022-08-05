@@ -10,7 +10,11 @@ const StyledGlobalStyle = createGlobalStyle`
         color: ${colors.darkblue};
     }
 
-    body {
+    body { 
+        margin: 0;
+    }
+
+    #root {
         margin: 0;
         display: flex;
         flex-direction: column;
