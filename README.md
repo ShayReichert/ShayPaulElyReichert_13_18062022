@@ -5,9 +5,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ##  I. Prerequisites
 Make sure you have installed the following prerequisites on your development machine:
 
-Git - Download & Install Git.
-Node.js - Download & Install Node.js and the npm package manager (we recommend node v.12 or higher).
-Recommended code editor: VSCode
+* Git - [Download & Install Git](https://git-scm.com/downloads).
+* Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager (we recommend **node v.12 or higher**).
+* Recommended code editor: [VSCode](https://code.visualstudio.com/)
 
 ## II. Before You Begin
 Before you start, you need to install the backend part of the project. Follow these steps:
@@ -17,20 +17,22 @@ Launch the backend locally on your computer.
 
 ## III. Launch the front-end locally
 
-- Fork this repository.
+### - Fork this repository.
 Click the fork button at the top of this page.
 
-- Clone your new repo on your computer:
+### - Clone your new repo on your computer:
 git clone https://github.com/<YourUserName>/<PathToTheRepo>
 
-- Open it with VSCode.
+### - Open it with VSCode.
 
-- Install npm packages:
+### - Install npm packages:
+```
+npm install
+```
 
-### `npm install`
+### - Launch React app:
+```
+npm start
+```
 
-- Launch React app:
-
-### `npm start`
-
-- Go to http://localhost:3000/
+### - Go to http://localhost:3000/
