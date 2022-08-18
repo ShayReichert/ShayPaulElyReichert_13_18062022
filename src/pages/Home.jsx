@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import colors from "../utils/style/colors";
 import HeroImage from "../assets/bank-tree.jpeg";
-import features from "../utils/data/features";
+import { features } from "../utils/data/features";
 import Feature from "../components/Feature";
 
 const HeroContainer = styled.section`

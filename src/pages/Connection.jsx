@@ -2,19 +2,7 @@ import styled from "styled-components";
 import colors from "../utils/style/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
-
-const SignInButton = styled.button`
-  display: block;
-  width: 100%;
-  padding: 8px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  margin-top: 1rem;
-  border-color: ${colors.primary};
-  background-color: ${colors.primary};
-  color: #fff;
-  cursor: pointer;
-`;
+import Button from "../components/Button";
 
 const SignInContent = styled.section`
   box-sizing: border-box;
@@ -52,7 +40,6 @@ const InputWrapper = styled.div`
   }
 `;
 
-
 function Connection() {
   return (
     <main className="main bg-dark">
@@ -73,7 +60,7 @@ function Connection() {
             <label htmlFor="remember-me">Remember me</label>
           </InputRemember>
 
-          <SignInButton>Sign In</SignInButton>
+          <Button>Sign In</Button>
         </form>
       </SignInContent>
     </main>
