@@ -21,7 +21,9 @@ Launch the backend locally on your computer.
 Click the fork button at the top of this page.
 
 ### - Clone your new repo on your computer:
+```
 git clone https://github.com/<YourUserName>/<PathToTheRepo>
+```
 
 ### - Open it with VSCode.
 
