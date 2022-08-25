@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Connection from "./pages/Connection";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
@@ -22,6 +22,7 @@ root.render(
           <Route path="/" element={<Home />}></Route>
           <Route path="/connection" element={<Connection />}></Route>
           <Route path="/profile" element={<Profile />}></Route>
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
         <Footer />
       </Router>

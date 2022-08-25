@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { selectToken } from "../utils/selector";
+import { selectAuth } from "../utils/selector";
 
 const initialState = {
   status: "void",
@@ -8,7 +8,7 @@ const initialState = {
 };
 
 const { actions, reducer } = createSlice({
-  name: "token",
+  name: "auth",
   initialState,
   reducers: {
     fetching: (draft, action) => {
@@ -47,8 +47,8 @@ const { actions, reducer } = createSlice({
   },
 });
 
-export async function fetchOrUpdateToken(dispatch, getState) {
-  const status = selectToken(getState()).status;
+export async function fetchOrUpdateAuth(dispatch, getState) {
+  const status = selectAuth(getState()).status;
   if (status === "pending" || status === "updating") {
     return;
   }

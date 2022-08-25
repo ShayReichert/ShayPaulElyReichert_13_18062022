@@ -5,8 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import Button from "../components/Button";
 import { useDispatch, useSelector } from "react-redux";
-import { selectToken } from "../utils/selector";
-import { fetchOrUpdateToken } from "../features/token";
+import { selectAuth } from "../utils/selector";
+import { fetchOrUpdateAuth } from "../features/auth";
 
 
 const SignInContent = styled.section`
@@ -46,15 +46,15 @@ const InputWrapper = styled.div`
 `;
 
 function Connection() {
-  const token = useSelector(selectToken);
+  const auth = useSelector(selectAuth);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchOrUpdateToken);
+    dispatch(fetchOrUpdateAuth);
   }, [dispatch]);
 
-  const tokenData = token.data.body?.token;
-  console.log(tokenData);
+  const token = auth.data?.body?.token;
+  console.log(token);
 
   // Ecrire en pseudo code ce que je veux faire du token (le stoker dans le state redux + le stocker dans le local Storage pendant X temps)
   // Ajouter une logique dans redux pour vérifier si il y a un token dans le local Storage avant de fetch  
@@ -78,7 +78,7 @@ function Connection() {
             <label htmlFor="remember-me">Remember me</label>
           </InputRemember>
 
-          <Button>Sign In</Button>
+          <Button className="sign-in-button">Sign In</Button>
         </form>
       </SignInContent>
     </main>
