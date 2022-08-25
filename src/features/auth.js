@@ -21,7 +21,7 @@ const { actions, reducer } = createSlice({
         draft.status = "pending";
         return;
       }
-      if (draft.status === "resolved") {
+      if (draft.status === "login") {
         draft.status = "updating";
         return;
       }
@@ -30,7 +30,7 @@ const { actions, reducer } = createSlice({
     resolved: (draft, action) => {
       if (draft.status === "pending" || draft.status === "updating") {
         draft.data = action.payload;
-        draft.status = "resolved";
+        draft.status = "login";
         return;
       }
       return;
@@ -44,30 +44,60 @@ const { actions, reducer } = createSlice({
       }
       return;
     },
+    logout: (draft, action) => {
+      if (draft.status === "pending" || draft.status === "updating") {
+        draft.error = null;
+        draft.data = null;
+        draft.status = "logout";
+        return;
+      }
+      return;
+    },
   },
 });
 
-export async function fetchOrUpdateAuth(dispatch, getState) {
-  const status = selectAuth(getState()).status;
-  if (status === "pending" || status === "updating") {
-    return;
-  }
-  dispatch(actions.fetching());
-  try {
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: "tony@stark.com",
-        password: "password123",
-      }),
-    };
-    const response = await fetch("http://localhost:3001/api/v1/user/login", requestOptions);
-    const data = await response.json();
-    dispatch(actions.resolved(data));
-  } catch (error) {
-    dispatch(actions.rejected(error));
-  }
+export function authLogIn(credentials, hasLocalStorage) {
+  // return a thunk
+  return async (dispatch, getState) => {
+    const status = selectAuth(getState()).status;
+
+    if (status === "pending" || status === "updating") {
+      return;
+    }
+
+    dispatch(actions.fetching());
+
+    try {
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(credentials),
+      };
+
+      const response = await fetch("http://localhost:3001/api/v1/user/login", requestOptions);
+      const data = await response.json();
+
+      if (data.status === 400) {
+        dispatch(actions.rejected(data.message));
+        console.error("Identifiants incorrects");
+        return;
+      }
+
+      if (hasLocalStorage) {
+        localStorage.setItem("token", JSON.stringify(data.body.token));
+      }
+
+      dispatch(actions.resolved(data));
+    } catch (error) {
+      dispatch(actions.rejected(error));
+    }
+  };
+}
+
+export function authLogOut(dispatch, getState) {
+  dispatch(actions.logout());
+  localStorage.removeItem("token");
+  window.location.href = "/";
 }
 
 export default reducer;

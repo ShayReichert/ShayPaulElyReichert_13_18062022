@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import colors from "../utils/style/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,8 +6,7 @@ import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import Button from "../components/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAuth } from "../utils/selector";
-import { fetchOrUpdateAuth } from "../features/auth";
-
+import { authLogIn } from "../features/auth";
 
 const SignInContent = styled.section`
   box-sizing: border-box;
@@ -46,35 +45,43 @@ const InputWrapper = styled.div`
 `;
 
 function Connection() {
+  const [email, setUserEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const auth = useSelector(selectAuth);
   const dispatch = useDispatch();
+  const credentials = {
+    email: email,
+    password: password,
+  };
 
-  useEffect(() => {
-    dispatch(fetchOrUpdateAuth);
-  }, [dispatch]);
+  const toggleRememberMe = () => {
+    setRememberMe((current) => !current);
+  };
 
-  const token = auth.data?.body?.token;
-  console.log(token);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(authLogIn(credentials, rememberMe));
+  };
 
-  // Ecrire en pseudo code ce que je veux faire du token (le stoker dans le state redux + le stocker dans le local Storage pendant X temps)
-  // Ajouter une logique dans redux pour vérifier si il y a un token dans le local Storage avant de fetch  
+  const token = JSON.parse(localStorage.getItem("token")) ? JSON.parse(localStorage.getItem("token")) : auth.data?.body?.token;
 
   return (
     <main className="main bg-dark">
       <SignInContent>
         <SignInIcon icon={faUserCircle} />
         <h1>Sign In</h1>
-        <form>
+        <form onSubmit={handleSubmit}>
           <InputWrapper>
             <label htmlFor="username">Username</label>
-            <input type="text" id="username" />
+            <input type="text" id="username" value={email} onChange={(e) => setUserEmail(e.target.value)} />
           </InputWrapper>
           <InputWrapper>
             <label htmlFor="password">Password</label>
-            <input type="password" id="password" />
+            <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
           </InputWrapper>
           <InputRemember>
-            <input type="checkbox" id="remember-me" />
+            <input type="checkbox" id="remember-me" value={rememberMe} onChange={toggleRememberMe} />
             <label htmlFor="remember-me">Remember me</label>
           </InputRemember>
 

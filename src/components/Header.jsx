@@ -4,6 +4,9 @@ import Logo from "../assets/argentBankLogo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle, faSignOut } from "@fortawesome/free-solid-svg-icons";
 import colors from "../utils/style/colors";
+import { useDispatch, useSelector } from "react-redux";
+import { authLogOut } from "../features/auth";
+import { selectAuth } from "../utils/selector";
 
 const HeaderContainer = styled.nav`
   display: flex;
@@ -40,7 +43,51 @@ const ItemLink = styled(Link)`
   }
 `;
 
-const isLoggIn = false;
+function Header() {
+  const auth = useSelector(selectAuth);
+
+  if (auth.status === "login") {
+    return <HeaderLogOut />;
+  } else {
+    return <HeaderLogIn />;
+  }
+}
+
+export default Header;
+
+function HeaderLogIn() {
+  return (
+    <HeaderContainer>
+      <LogoLink />
+      <ItemLink to="/connection">
+        <FontAwesomeIcon icon={faUserCircle} /> Sign In
+      </ItemLink>
+    </HeaderContainer>
+  );
+}
+
+function HeaderLogOut() {
+  const dispatch = useDispatch();
+
+  const handleLogOut = (e) => {
+    e.preventDefault();
+    dispatch(authLogOut);
+  };
+
+  return (
+    <HeaderContainer>
+      <LogoLink />
+      <div>
+        <ItemLink to="/profile">
+          <FontAwesomeIcon icon={faUserCircle} /> Tony
+        </ItemLink>
+        <ItemLink to="/" onClick={handleLogOut}>
+          <FontAwesomeIcon icon={faSignOut} /> Sign Out
+        </ItemLink>
+      </div>
+    </HeaderContainer>
+  );
+}
 
 function LogoLink() {
   return (
@@ -50,44 +97,3 @@ function LogoLink() {
     </LogoLinkContainer>
   );
 }
-
-function HeaderLogOut() {
-  return (
-    <HeaderContainer>
-      <LogoLink />
-
-      <ItemLink to="/connection">
-        <FontAwesomeIcon icon={faUserCircle} /> Sign In
-      </ItemLink>
-
-      {/* <Link to="/profile">Profile</Link> */}
-    </HeaderContainer>
-  );
-}
-
-function HeaderLogIn() {
-  return (
-    <HeaderContainer>
-      <LogoLink />
-
-      <div>
-        <ItemLink to="/profile">
-          <FontAwesomeIcon icon={faUserCircle} /> Tony
-        </ItemLink>
-        <ItemLink to="/">
-          <FontAwesomeIcon icon={faSignOut} /> Sign Out
-        </ItemLink>
-      </div>
-    </HeaderContainer>
-  );
-}
-
-function Header() {
-  if (isLoggIn) {
-    return <HeaderLogIn />;
-  } else {
-    return <HeaderLogOut />;
-  }
-}
-
-export default Header;
