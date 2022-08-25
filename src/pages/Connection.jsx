@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import colors from "../utils/style/colors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import Button from "../components/Button";
 import { useDispatch, useSelector } from "react-redux";
-import { selectAuth } from "../utils/selector";
-import { authLogIn } from "../features/auth";
+import { useNavigate } from "react-router-dom";
+import { userLogin } from "../features/userActions";
 
 const SignInContent = styled.section`
   box-sizing: border-box;
@@ -47,24 +47,34 @@ const InputWrapper = styled.div`
 function Connection() {
   const [email, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
-  const auth = useSelector(selectAuth);
+  const [hasRememberMe, setHasRememberMe] = useState(false);
+
+  const { loading, userInfo, error } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+
   const credentials = {
     email: email,
     password: password,
   };
 
   const toggleRememberMe = () => {
-    setRememberMe((current) => !current);
+    setHasRememberMe((current) => !current);
   };
+
+  const navigate = useNavigate();
+
+  // If user is authenticate, redirect to profile page
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/profile");
+    }
+  }, [navigate, userInfo]);
 
   const handleSubmit = (e) => {
+    const userData = { credentials, hasRememberMe };
     e.preventDefault();
-    dispatch(authLogIn(credentials, rememberMe));
+    dispatch(userLogin(userData));
   };
-
-  const token = JSON.parse(localStorage.getItem("token")) ? JSON.parse(localStorage.getItem("token")) : auth.data?.body?.token;
 
   return (
     <main className="main bg-dark">
@@ -72,6 +82,7 @@ function Connection() {
         <SignInIcon icon={faUserCircle} />
         <h1>Sign In</h1>
         <form onSubmit={handleSubmit}>
+          {error && <div>{error}</div>}
           <InputWrapper>
             <label htmlFor="username">Username</label>
             <input type="text" id="username" value={email} onChange={(e) => setUserEmail(e.target.value)} />
@@ -81,11 +92,13 @@ function Connection() {
             <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
           </InputWrapper>
           <InputRemember>
-            <input type="checkbox" id="remember-me" value={rememberMe} onChange={toggleRememberMe} />
+            <input type="checkbox" id="remember-me" value={hasRememberMe} onChange={toggleRememberMe} />
             <label htmlFor="remember-me">Remember me</label>
           </InputRemember>
 
-          <Button className="sign-in-button">Sign In</Button>
+          <Button className="sign-in-button" disabled={loading}>
+            Sign In
+          </Button>
         </form>
       </SignInContent>
     </main>

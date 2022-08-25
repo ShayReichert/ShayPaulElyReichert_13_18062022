@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Button from "../components/Button";
 import { transactions } from "../utils/data/transactions";
 import AccountCard from "../components/AccountCard";
+import { useSelector } from "react-redux";
 
 const Header = styled.section`
   color: #fff;
@@ -15,13 +16,14 @@ const Title1 = styled.h1`
 `;
 
 function Profile() {
+  const { userInfo } = useSelector((state) => state.user);
   return (
     <main className="main bg-dark">
       <Header>
         <Title1>
           Welcome back
           <br />
-          Tony Jarvis!
+          {userInfo?.firstName} {userInfo?.lastName}!
         </Title1>
         <Button className="edit-button">Edit Name</Button>
       </Header>

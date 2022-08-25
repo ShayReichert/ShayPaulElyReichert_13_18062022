@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../assets/argentBankLogo.png";
@@ -5,8 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle, faSignOut } from "@fortawesome/free-solid-svg-icons";
 import colors from "../utils/style/colors";
 import { useDispatch, useSelector } from "react-redux";
-import { authLogOut } from "../features/auth";
-import { selectAuth } from "../utils/selector";
+import { getUserInfos } from "../features/userActions";
+import { logout } from "../features/userSlice";
 
 const HeaderContainer = styled.nav`
   display: flex;
@@ -24,7 +25,7 @@ const HeaderContainer = styled.nav`
   }
 `;
 
-const LogoLinkContainer = styled(Link)`
+const LogoLink = styled(Link)`
   display: flex;
   align-items: center;
 `;
@@ -44,56 +45,39 @@ const ItemLink = styled(Link)`
 `;
 
 function Header() {
-  const auth = useSelector(selectAuth);
+  const { userInfo, userToken } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
-  if (auth.status === "login") {
-    return <HeaderLogOut />;
-  } else {
-    return <HeaderLogIn />;
-  }
+  // If token is found, authenticate user
+  useEffect(() => {
+    if (userToken) {
+      dispatch(getUserInfos());
+    }
+  }, [userToken, dispatch]);
+
+  return (
+    <HeaderContainer>
+      <LogoLink to="/">
+        <HomeLogo src={Logo} alt="Argent Bank Logo" />
+        <h1 className="sr-only">Argent Bank</h1>
+      </LogoLink>
+
+      {userInfo ? (
+        <div>
+          <ItemLink to="/profile">
+            <FontAwesomeIcon icon={faUserCircle} /> {userInfo?.firstName}
+          </ItemLink>
+          <ItemLink to="/" onClick={() => dispatch(logout())}>
+            <FontAwesomeIcon icon={faSignOut} /> Sign Out
+          </ItemLink>
+        </div>
+      ) : (
+        <ItemLink to="/connection">
+          <FontAwesomeIcon icon={faUserCircle} /> Sign In
+        </ItemLink>
+      )}
+    </HeaderContainer>
+  );
 }
 
 export default Header;
-
-function HeaderLogIn() {
-  return (
-    <HeaderContainer>
-      <LogoLink />
-      <ItemLink to="/connection">
-        <FontAwesomeIcon icon={faUserCircle} /> Sign In
-      </ItemLink>
-    </HeaderContainer>
-  );
-}
-
-function HeaderLogOut() {
-  const dispatch = useDispatch();
-
-  const handleLogOut = (e) => {
-    e.preventDefault();
-    dispatch(authLogOut);
-  };
-
-  return (
-    <HeaderContainer>
-      <LogoLink />
-      <div>
-        <ItemLink to="/profile">
-          <FontAwesomeIcon icon={faUserCircle} /> Tony
-        </ItemLink>
-        <ItemLink to="/" onClick={handleLogOut}>
-          <FontAwesomeIcon icon={faSignOut} /> Sign Out
-        </ItemLink>
-      </div>
-    </HeaderContainer>
-  );
-}
-
-function LogoLink() {
-  return (
-    <LogoLinkContainer to="/">
-      <HomeLogo src={Logo} alt="Argent Bank Logo" />
-      <h1 className="sr-only">Argent Bank</h1>
-    </LogoLinkContainer>
-  );
-}
