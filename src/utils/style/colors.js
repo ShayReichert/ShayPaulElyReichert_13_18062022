@@ -4,7 +4,8 @@ const colors = {
   backgroundLight: "#ffffff",
   backgroundDark: "#12002b",
   dark: "#222",
-  darkblue: '#2c3e50',
+  darkblue: "#2c3e50",
+  red: "#ce0e0e",
 };
 
 export default colors;

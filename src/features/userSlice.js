@@ -5,6 +5,7 @@ import { getUserInfos, userLogin } from "./userActions";
 const userToken = localStorage.getItem("token") ? localStorage.getItem("token") : null;
 
 const initialState = {
+  status: null,
   loading: false,
   userInfo: null,
   userToken,
@@ -17,6 +18,7 @@ const userSlice = createSlice({
   reducers: {
     logout: (state) => {
       localStorage.removeItem("token");
+      state.status = null;
       state.loading = false;
       state.userInfo = null;
       state.userToken = null;
@@ -26,15 +28,17 @@ const userSlice = createSlice({
   extraReducers: {
     // User Login
     [userLogin.pending]: (state) => {
+      state.status = null;
       state.loading = true;
       state.error = null;
     },
     [userLogin.fulfilled]: (state, { payload }) => {
+      state.status = payload.status;
       state.loading = false;
-      state.userInfo = payload;
       state.userToken = payload.body.token;
     },
     [userLogin.rejected]: (state, { payload }) => {
+      state.status = payload.status;
       state.loading = false;
       state.error = payload.message;
     },
@@ -43,10 +47,12 @@ const userSlice = createSlice({
       state.loading = true;
     },
     [getUserInfos.fulfilled]: (state, { payload }) => {
+      state.status = payload.status;
       state.loading = false;
       state.userInfo = payload.body;
     },
     [getUserInfos.rejected]: (state, { payload }) => {
+      state.status = payload.status;
       state.loading = false;
       state.error = payload.message;
     },

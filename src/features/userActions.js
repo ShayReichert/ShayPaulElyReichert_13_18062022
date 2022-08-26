@@ -20,7 +20,7 @@ export const userLogin = createAsyncThunk("user/login", async (userData, { rejec
     }
 
     console.error(data.message);
-    return rejectWithValue(data.message);
+    return rejectWithValue(data);
   } catch (error) {
     return rejectWithValue(error.message);
   }
@@ -47,7 +47,7 @@ export const getUserInfos = createAsyncThunk("user/getUserInfos", async (arg, { 
     }
 
     console.error(data.message);
-    return rejectWithValue(data.message);
+    return rejectWithValue(data);
   } catch (error) {
     return rejectWithValue(error.message);
   }

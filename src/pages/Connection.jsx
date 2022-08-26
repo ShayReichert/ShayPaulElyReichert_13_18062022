@@ -21,6 +21,11 @@ const SignInIcon = styled(FontAwesomeIcon)`
   font-size: 5rem;
 `;
 
+const Error = styled.div`
+  font-size: 0.9rem;
+  color: ${colors.red};
+`;
+
 const InputRemember = styled.div`
   display: flex;
 
@@ -48,7 +53,6 @@ function Connection() {
   const [email, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
   const [hasRememberMe, setHasRememberMe] = useState(false);
-
   const { loading, userInfo, error } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
@@ -82,7 +86,7 @@ function Connection() {
         <SignInIcon icon={faUserCircle} />
         <h1>Sign In</h1>
         <form onSubmit={handleSubmit}>
-          {error && <div>{error}</div>}
+          {error && <Error>{error}</Error>}
           <InputWrapper>
             <label htmlFor="username">Username</label>
             <input type="text" id="username" value={email} onChange={(e) => setUserEmail(e.target.value)} />
