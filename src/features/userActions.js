@@ -1,4 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { BASE_API_URL } from "../utils/helpers/api";
 
 export const userLogin = createAsyncThunk("user/login", async (userData, { rejectWithValue }) => {
   try {
@@ -8,7 +9,7 @@ export const userLogin = createAsyncThunk("user/login", async (userData, { rejec
       body: JSON.stringify(userData.credentials),
     };
 
-    const response = await fetch("http://localhost:3001/api/v1/user/login", requestOptions);
+    const response = await fetch(BASE_API_URL + "user/login", requestOptions);
     const data = await response.json();
 
     if (data.status === 200) {
@@ -39,7 +40,7 @@ export const getUserInfos = createAsyncThunk("user/getUserInfos", async (arg, { 
       },
     };
 
-    const response = await fetch("http://localhost:3001/api/v1/user/profile", requestOptions);
+    const response = await fetch(BASE_API_URL + "user/profile", requestOptions);
     const data = await response.json();
 
     if (data.status === 200) {
@@ -67,7 +68,7 @@ export const editUserInfos = createAsyncThunk("user/editUserInfos", async (userD
       body: JSON.stringify(userData),
     };
 
-    const response = await fetch("http://localhost:3001/api/v1/user/profile", requestOptions);
+    const response = await fetch(BASE_API_URL + "user/profile", requestOptions);
     const data = await response.json();
 
     if (data.status === 200) {
