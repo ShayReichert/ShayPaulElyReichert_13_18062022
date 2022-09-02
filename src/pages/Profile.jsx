@@ -18,10 +18,10 @@ const Title1 = styled.h1`
 `;
 
 function Profile() {
+  const { userInfo } = useSelector((state) => state.user);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [isEdit, setIsEdit] = useState(false);
-  const { userInfo } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
