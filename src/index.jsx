@@ -5,6 +5,7 @@ import Connection from "./pages/Connection";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Header from "./components/Header";
+import PrivateRoute from "./components/PrivateRoute"
 import GlobalStyle from "./utils/style/GlobalStyle";
 import Footer from "./components/Footer";
 import { Provider } from "react-redux";
@@ -21,7 +22,14 @@ root.render(
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/connection" element={<Connection />}></Route>
-          <Route path="/profile" element={<Profile />}></Route>
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <Profile />
+              </PrivateRoute>
+            }
+          ></Route>
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
         <Footer />
