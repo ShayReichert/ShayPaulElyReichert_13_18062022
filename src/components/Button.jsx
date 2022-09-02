@@ -41,7 +41,11 @@ const DefaultButton = styled.button`
 `;
 
 function Button(props) {
-  return <DefaultButton className={props.className}>{props.children}</DefaultButton>;
+  return (
+    <DefaultButton className={props.className} onClick={props.onPress}>
+      {props.children}
+    </DefaultButton>
+  );
 }
 
 export default Button;

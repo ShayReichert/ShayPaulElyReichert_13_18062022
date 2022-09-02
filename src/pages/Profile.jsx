@@ -1,8 +1,10 @@
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Button from "../components/Button";
 import { transactions } from "../utils/data/transactions";
 import AccountCard from "../components/AccountCard";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { editUserInfos } from "../features/userActions";
 
 const Header = styled.section`
   color: #fff;
@@ -16,16 +18,55 @@ const Title1 = styled.h1`
 `;
 
 function Profile() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [isEdit, setIsEdit] = useState(false);
   const { userInfo } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setFirstName(userInfo?.firstName);
+    setLastName(userInfo?.lastName);
+  }, [userInfo]);
+
+  const handleClick = () => {
+    setIsEdit((status) => !status);
+
+    if (isEdit) {
+      const userData = {
+        firstName: firstName,
+        lastName: lastName,
+      };
+      dispatch(editUserInfos(userData));
+    }
+  };
+
   return (
     <main className="main bg-dark">
       <Header>
         <Title1>
           Welcome back
           <br />
-          {userInfo?.firstName} {userInfo?.lastName}!
+          {isEdit ? (
+            <>
+              <input type="text" id="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+              <input type="text" id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+            </>
+          ) : (
+            <>
+              {userInfo?.firstName} {userInfo?.lastName}!
+            </>
+          )}
         </Title1>
-        <Button className="edit-button">Edit Name</Button>
+        {isEdit ? (
+          <Button className="edit-button" onPress={handleClick}>
+            Save
+          </Button>
+        ) : (
+          <Button className="edit-button" onPress={handleClick}>
+            Edit Name
+          </Button>
+        )}
       </Header>
       <h2 className="sr-only">Accounts</h2>
 
