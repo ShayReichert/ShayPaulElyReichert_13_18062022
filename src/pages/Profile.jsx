@@ -17,6 +17,12 @@ const Title1 = styled.h1`
   margin-block-end: 0.67em;
 `;
 
+const Input = styled.input`
+  margin: 0 1rem;
+  padding: 5px;
+  font-size: 1.2rem;
+`;
+
 function Profile() {
   const { userInfo } = useSelector((state) => state.user);
   const [firstName, setFirstName] = useState("");
@@ -41,6 +47,12 @@ function Profile() {
     }
   };
 
+  const handleCancel = () => {
+    setIsEdit(false);
+    setFirstName(userInfo?.firstName);
+    setLastName(userInfo?.lastName);
+  };
+
   return (
     <main className="main bg-dark">
       <Header>
@@ -49,8 +61,8 @@ function Profile() {
           <br />
           {isEdit ? (
             <>
-              <input type="text" id="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-              <input type="text" id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+              <Input type="text" id="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+              <Input type="text" id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} />
             </>
           ) : (
             <>
@@ -59,9 +71,14 @@ function Profile() {
           )}
         </Title1>
         {isEdit ? (
-          <Button className="edit-button" onPress={handleClick}>
-            Save
-          </Button>
+          <div className="buttons">
+            <Button className="edit-button" onPress={handleClick}>
+              Save
+            </Button>
+            <Button className="edit-button" onPress={handleCancel}>
+              Cancel
+            </Button>
+          </div>
         ) : (
           <Button className="edit-button" onPress={handleClick}>
             Edit Name

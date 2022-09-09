@@ -21,6 +21,8 @@ const DefaultButton = styled.button`
     color: #fff;
     font-weight: bold;
     padding: 10px;
+    margin: 0 1rem;
+    min-width: 7rem;
   }
 
   &.transaction-button {
