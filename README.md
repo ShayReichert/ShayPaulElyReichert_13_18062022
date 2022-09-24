@@ -38,3 +38,11 @@ npm start
 ```
 
 ### - Go to http://localhost:3000/
+
+
+## IV. Endpoints Transactions
+
+Go to the [New Swagger Editor](https://editor-next.swagger.io/) and open swaggerTransactions.yaml file.
+(Note: the file does not open with the old editor)
+
+* Warning: The endpoint "DELETE /transaction/{transactionID}" has been created but its use may be subject to legal restrictions. It is the responsibility of the banking company to make the necessary legal checks before using it.
